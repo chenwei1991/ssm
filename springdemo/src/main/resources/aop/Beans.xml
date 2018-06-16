@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.2.xsd">
+
+    <bean id="helloWorld" class="top.imcw.aop.HelloWorld"/>
+    <bean id="timeHandler" class="top.imcw.aop.TimeHandler"/>
+    <bean id="logHandler" class="top.imcw.aop.LogHandler"/>
+
+    <aop:config>
+        <aop:aspect id="time" order="1" ref="timeHandler">
+            <aop:pointcut id="addTime" expression="execution(* top.imcw.aop.HelloWorld.print*(..))"/>
+            <aop:around method="printTime" pointcut-ref="addTime"/>
+        </aop:aspect>
+
+        <aop:aspect id="log" order="2" ref="logHandler">
+            <aop:pointcut id="addLog" expression="execution(* top.imcw.aop.HelloWorld.do*(..))"/>
+            <aop:before method="logBefore" pointcut-ref="addLog"/>
+            <aop:after method="logAfter" pointcut-ref="addLog"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
